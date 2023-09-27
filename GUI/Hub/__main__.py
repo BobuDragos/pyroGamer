@@ -29,12 +29,6 @@ parser.add_argument('--SetWindowSize', action='store_true', help='Set Hub window
 parser.add_argument('--width', type=int, help='Set Hub window width')
 parser.add_argument('--height', type=int, help='Set Hub window height')
 
-# parser.add_argument('--SetProjectListPath', action='store_true', help='Set Path to ProjectList.json')
-# parser.add_argument('--localPath', type=str, help='Path to ProjectList.json')
-
-# parser.add_argument('--SetProjectsTableHeaders', action='store_true', help='Set Headers for Projects Table View')
-# parser.add_argument('--headers', type=str, help='Headers for Projects Table View')
-
 
 
 class HubWindow(QMainWindow):

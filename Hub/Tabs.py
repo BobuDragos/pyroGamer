@@ -40,6 +40,7 @@ from pyroGamer.Hub.Tables import ProjectTable
 class LocalTab(QWidget):
     def __init__(self):
         super().__init__()
+
         self.layout = QVBoxLayout()
 
         buttonsLayout = QHBoxLayout()
@@ -55,6 +56,9 @@ class LocalTab(QWidget):
         self.layout.addWidget(ProjectTable.Local())
         
         self.setLayout(self.layout)
+
+
+        
 
     def open_project(self):
         fname = QFileDialog.getOpenFileName(self, 'Open file', '' ,"Json files (*.json)")

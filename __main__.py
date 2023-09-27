@@ -11,9 +11,8 @@ import pprint
 
 import textwrap
 from termcolor import colored
-from colorama import Fore, Back, Style, init, just_fix_windows_console
+from colorama import Fore, Back, Style, init
 init(autoreset=True)
-just_fix_windows_console()
 
 
 print(Fore.BLACK + Style.BRIGHT + "start pyroGamer...")

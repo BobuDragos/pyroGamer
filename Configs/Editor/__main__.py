@@ -6,7 +6,7 @@ import pprint
 import json 
 
 
-from pyroGamer.EditorConfig.FileManager import FileManager
+from pyroGamer.Configs.Editor.FileManager import FileManager
 
 from colorama import Fore, Back, Style, init
 init(autoreset=True)
