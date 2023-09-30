@@ -8,5 +8,3 @@ init(autoreset=True)
 print(Fore.BLACK + Style.BRIGHT + "init pyroGamer...")
 
 
-
-
