@@ -79,7 +79,7 @@ if args.command == "createProject":
         for directory in directories:
             os.makedirs(directory, exist_ok=True)
 
-        result = subprocess.run(['python', '-m', 'pyroGamer.Editor.SceneManager',
+        result = subprocess.run(['python', '-m', 'pyroGamer.GUI.Editor.SceneManager',
                                 'GetEmptyScene'], 
                                 capture_output=True, text=True)
         if result.returncode != 0:

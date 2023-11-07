@@ -37,14 +37,14 @@ from PyQt6.QtWidgets import (
     QFrame, QSplitterHandle, QSplitter, QSizePolicy,
 )
 
-from pyroGamer.Editor.GUI.Tabs.Assets import AssetsTab
-from pyroGamer.Editor.GUI.Tabs.Terminal import TerminalTab
-from pyroGamer.Editor.GUI.Tabs.Hierarchy import HierarchyTab
+from pyroGamer.GUI.Editor.Elements.Tabs.Assets import AssetsTab
+from pyroGamer.GUI.Editor.Elements.Tabs.Terminal  import TerminalTab
+from pyroGamer.GUI.Editor.Elements.Tabs.Hierarchy import HierarchyTab
 
 
 class ProjectPage(QMainWindow):
     def GetWindowSize():
-        result = subprocess.run(['python', '-m', 'pyroGamer.Configs.Editor', '--GetWindowSize'],
+        result = subprocess.run(['python', '-m', 'pyroGamer.GUI.Editor.Configs', '--GetWindowSize'],
                                 capture_output=True, text=True)
 
         if result.returncode != 0:
@@ -282,7 +282,7 @@ class ProjectPage(QMainWindow):
 
 class NoProjectPage(QMainWindow):
     def GetWindowSize():
-        result = subprocess.run(['python', '-m', 'pyroGamer.Configs.Editor', '--GetWindowSize'],
+        result = subprocess.run(['python', '-m', 'pyroGamer.GUI.Editor.Configs', '--GetWindowSize'],
                                 capture_output=True, text=True)
 
         if result.returncode != 0:
@@ -301,7 +301,7 @@ class NoProjectPage(QMainWindow):
         self.setWindowTitle("Editor - No Project Loaded")
 
         self.resize(NoProjectPage.GetWindowSize())
-        self.setStyleSheet(Path("pyroGamer/Editor/GUI/styles/noProjectWindow.css").read_text())
+        self.setStyleSheet(Path("pyroGamer/GUI/Editor/styles/noProjectWindow.css").read_text())
 
         centralWidget = QWidget()
         centralWidget.setObjectName("CentralWidget")
@@ -352,7 +352,7 @@ class NoProjectPage(QMainWindow):
 
     """
     # 
-    # Button Functions
+    # Button Functions for NoProjectPage
     # 
     """
 
@@ -362,7 +362,7 @@ class NoProjectPage(QMainWindow):
             return
         selectedPath = Path(fname[0]).as_posix()
 
-        result = subprocess.run(['python', '-m', 'pyroGamer.FileManager.Editor',
+        result = subprocess.run(['python', '-m', 'pyroGamer.GUI.Editor.FileManager',
                                 'isValidProject', '--path', selectedPath],
                                 capture_output=True, text=True)
         if result.returncode != 0:
@@ -378,15 +378,15 @@ class NoProjectPage(QMainWindow):
                     QMessageBox.critical(self, "Error", "The selected file is not a valid project file")
                     return
                 else:
-                    subprocess.Popen(['python', '-m', 'pyroGamer.Editor',
+                    subprocess.Popen(['python', '-m', 'pyroGamer.GUI.Editor',
                                             'OpenProject', '--path', selectedPath])
                     sys.exit(0)
             
     def CreateProject(self):
         inputDialog = QDialog()
         inputDialog.setWindowTitle("Create new project")
-        inputDialog.setWindowIcon(QIcon('pyroGamer/Editor/GUI/icons/box-label.png'))
-        inputDialog.setStyleSheet(Path("pyroGamer/Editor/GUI/styles/createProjWindow.css").read_text())
+        inputDialog.setWindowIcon(QIcon('pyroGamer/GUI/Editor/icons/box-label.png'))
+        inputDialog.setStyleSheet(Path("pyroGamer/GUI/Editor/styles/createProjWindow.css").read_text())
         inputDialog.setFixedSize(200, 150)
 
         mainLayout = QVBoxLayout()
@@ -404,7 +404,7 @@ class NoProjectPage(QMainWindow):
             return pathInput.setText(QFileDialog.getExistingDirectory(self, "Select Directory"))
         
         browseAction = QAction("Browse")
-        browseAction.setIcon(QIcon("pyroGamer/Editor/GUI/icons/blue-document-search-result.png"))
+        browseAction.setIcon(QIcon("pyroGamer/GUI/Editor/icons/blue-document-search-result.png"))
         browseAction.triggered.connect(browse)
         pathInput.addAction(browseAction, QLineEdit.ActionPosition.TrailingPosition)
         mainLayout.addWidget(pathInput)
@@ -435,7 +435,7 @@ class NoProjectPage(QMainWindow):
             if name == "" or path == "":
                 QMessageBox.critical(self, "Error", "Please fill all fields")
                 return        
-            result = subprocess.run(['python', '-m', 'pyroGamer.FileManager.Editor',
+            result = subprocess.run(['python', '-m', 'pyroGamer.GUI.Editor.FileManager',
                                     'createProject', '--name', name, '--path', path],
                                     capture_output=True, text=True)
             if result.returncode != 0:
@@ -443,7 +443,7 @@ class NoProjectPage(QMainWindow):
                 print(Fore.RED + Style.BRIGHT + "Error: " + str(result.stderr))
                 sys.exit(1)
             newProjectPath = Path(os.path.join(path, name)).as_posix()
-            subprocess.Popen(['python', '-m', 'pyroGamer.Editor',
+            subprocess.Popen(['python', '-m', 'pyroGamer.GUI.Editor',
                               'OpenProject', '--path', newProjectPath])
             sys.exit(0)
             

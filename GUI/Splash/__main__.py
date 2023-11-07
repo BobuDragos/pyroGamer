@@ -19,52 +19,25 @@ print(Fore.BLACK + Style.BRIGHT + "start splashScreen...")
 
 
 
+# TODO: Add splash class for more complex splash screen with:
+# - a loading message, loading bar, loading percentage, loading animation
 
+if __name__ == "__main__":
+    def splash_ended():
+        splash.close()
+        print("splash ended")
+        subprocess.run(["python", "-m", "pyroGamer.GUI.Hub"])
+        sys.exit(0)
 
-def splash_ended():
+    app = QApplication(sys.argv)
 
-    splash.close()
-    print("splash ended")
-    # subprocess.run(["python", "-m", "pyroGamer.Hub"])
-    sys.exit(0)
+    splashImage = QPixmap('pyroGamer/GUI/Splash/images/pyroTf2.jpg')
+    splashSize = QSize(250,250)
+    splashImage = splashImage.scaled(splashSize, Qt.AspectRatioMode.KeepAspectRatio)
 
+    splash = QSplashScreen(splashImage)
+    splash.show()
 
+    QTimer.singleShot(250, splash_ended)
 
-
-# splashImage = QPixmap('images/pyroTf2.jpg')
-# splashImage = splashImage.scaled(QSize(250, 250), Qt.AspectRatioMode.KeepAspectRatio)
-
-# splash = QSplashScreen(splashImage)
-# splash.show()
-
-# QTimer.singleShot(250, splash_ended)
-
-
-class SplashScreen(QSplashScreen):
-    def init(self):
-        self.size = QSize(250,250)
-        self.pixmap = QPixmap('pyroGamer/GUI/Splash/images/pyroTf2.jpg')
-        self.pixmap = self.pixmap.scaled(self.size, Qt.AspectRatioMode.KeepAspectRatio)
-        self.setPixmap(self.pixmap)
-
-        print("before splash call")
-        self.show()
-        # QSplashScreen(self.image).show()
-        print("after splash call")
-
-        self.close()
-
-
-
-
-app = QApplication(sys.argv)
-
-# splashImage = QPixmap('pyroGamer/GUI/Splash/images/pyroTf2.jpg')
-# splashImage = splashImage.scaled(QSize(250, 250), Qt.AspectRatioMode.KeepAspectRatio)
-
-splash = SplashScreen
-# splash.show()
-
-QTimer.singleShot(250, splash_ended)
-
-app.exec()
+    app.exec()

@@ -65,9 +65,9 @@ class ProjectTable():
         localTable = Table()
 
         def GetProjectTableHeaders():
-            print(Fore.BLUE +"Instantiating " + "pyroGamer.HubConfig" + " to get ProjectTableHeaders...")
+            print(Fore.BLUE +"Instantiating " + "pyroGamer.GUI.Hub.Configs" + " to get ProjectTableHeaders...")
 
-            result = subprocess.run(['python', '-m', 'pyroGamer.HubConfig', '--GetProjectsTableHeaders'], capture_output=True, text=True)
+            result = subprocess.run(['python', '-m', 'pyroGamer.GUI.Hub.Configs', '--GetProjectsTableHeaders'], capture_output=True, text=True)
 
             if result.returncode != 0:
                 print(Fore.LIGHTBLACK_EX + textwrap.indent(pprint.pformat(result.stdout, width=100), '>'))
@@ -97,8 +97,8 @@ class ProjectTable():
         localTable.setHorizontalHeaderLabels(headersWithSymbols)
 
         def GetProjectListPath():
-            print(Fore.BLUE +"Instantiating " + "pyroGamer.HubConfig" + " to get ProjectListPath...")
-            result = subprocess.run(['python', '-m', 'pyroGamer.HubConfig', '--GetProjectListPath'], capture_output=True, text=True)
+            print(Fore.BLUE +"Instantiating " + "pyroGamer.GUI.Hub.Configs" + " to get ProjectListPath...")
+            result = subprocess.run(['python', '-m', 'pyroGamer.GUI.Hub.Configs', '--GetProjectListPath'], capture_output=True, text=True)
 
 
             if result.returncode != 0:
@@ -170,7 +170,7 @@ class Buttons(QPushButton):
                     command = "--StarProject"
                 else:
                     command = "--UnstarProject"
-                result = subprocess.run(["python", "-m", "pyroGamer.HubConfig"] +
+                result = subprocess.run(["python", "-m", "pyroGamer.GUI.Hub.Configs"] +
                                             [command, str(projectID)], 
                                             capture_output=True, text=True)
                 if(result.returncode != 0):
@@ -209,7 +209,7 @@ class Buttons(QPushButton):
             self.setFont(font)
 
         def buttonClicked(self, project):
-            subprocess.run(["python", "-m", "pyroGamer.Editor"] + ["--projectPath", self.activeProjectPath])
+            subprocess.run(["python", "-m", "pyroGamer.GUI.Editor"] + ["OpenProject","--path", self.activeProjectPath])
 
     class Options(QPushButton):
         def __init__(self, project):

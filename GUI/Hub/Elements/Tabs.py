@@ -35,7 +35,7 @@ from colorama import Fore, Back, Style, init
 init(autoreset=True)
 
 
-from pyroGamer.Hub.Tables import ProjectTable
+from pyroGamer.GUI.Hub.Elements.Tables import ProjectTable
 
 class LocalTab(QWidget):
     def __init__(self):
@@ -67,8 +67,8 @@ class LocalTab(QWidget):
         path = Path(fname[0])
 
         # LocalConfig.AddProject(path)
-        print(Fore.BLUE + "Calling " + "pyroGamer.HubConfig --AddExistingProject" + " to open project...")
-        result = subprocess.run(['python', '-m', 'pyroGamer.HubConfig',
+        print(Fore.BLUE + "Calling " + "pyroGamer.GUI.Hub.Configs --AddExistingProject" + " to open project...")
+        result = subprocess.run(['python', '-m', 'pyroGamer.GUI.Hub.Configs',
                                   '--AddExistingProject', str(path.as_posix())],
                                   capture_output=True, text=True)
         
@@ -124,8 +124,8 @@ class LocalTab(QWidget):
                 QMessageBox.critical(None, "Error", "Please fill in all fields")
                 return
             
-            print(Fore.BLUE + "Calling " + "pyroGamer.HubConfig AddNewProject --name --path" + " to add new project...")
-            result = subprocess.run(['python', '-m', 'pyroGamer.HubConfig',
+            print(Fore.BLUE + "Calling " + "pyroGamer.GUI.Hub.Configs AddNewProject --name --path" + " to add new project...")
+            result = subprocess.run(['python', '-m', 'pyroGamer.GUI.Hub.Configs',
                                   'AddNewProject', '--name', NameInput.text(), '--path', Path(PathInput.text()).as_posix()],
                                   capture_output=True, text=True)
             

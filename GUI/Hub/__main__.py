@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import (
     QGridLayout, QVBoxLayout, QHBoxLayout,
 )
 
-from pyroGamer.Hub.Tabs import LocalTab
+from pyroGamer.GUI.Hub.Elements.Tabs import LocalTab
 
 import pprint
 import textwrap
@@ -22,57 +22,65 @@ import argparse
 from colorama import Fore, Back, Style, init
 init(autoreset=True)
 
-print(Fore.BLACK + Style.BRIGHT + "start pyroGamer.Hub...")
+print(Fore.BLACK + Style.BRIGHT + "starting pyroGamer.Hub...")
 
 parser = argparse.ArgumentParser(description='Hub Utility')
-parser.add_argument('--SetWindowSize', action='store_true', help='Set Hub window size')
-parser.add_argument('--width', type=int, help='Set Hub window width')
-parser.add_argument('--height', type=int, help='Set Hub window height')
+parser.add_argument('-v', '--verbose', action="store_true", help='Print more information')
+
+subparsers = parser.add_subparsers(title= 'subcommands', dest='command')
+
+setWindowSize_parser = subparsers.add_parser('SetWindowSize', help='Open on a specific window size')
+setWindowSize_parser.add_argument('--width', required=True, type=int, help='Set Hub window width')
+setWindowSize_parser.add_argument('--height', required=True,  type=int, help='Set Hub window height')
+
+
+
+args = parser.parse_args()
+
+WindowSize = None
+
+if args.command == "SetWindowSize":
+    print(Fore.BLUE + "Received Hub window size from cli")
+    print(Fore.GREEN + "Setting Hub window size to " + str(args.width) + "x" + str(args.height))
+    WindowSize = QSize(args.width, args.height)
+    
+else:
+    print(Fore.BLUE + "No Hub window size received from cli")
+    print(Fore.YELLOW + "Instantiating " + "pyroGamer.GUI.Hub.Configs" + " to get Hub window size...")
+    result = subprocess.run(['python', '-m', 'pyroGamer.GUI.Hub.Configs', '--GetWindowSize'], capture_output=True, text=True)
+
+    if args.verbose:
+        print(Fore.LIGHTBLACK_EX + textwrap.indent(pprint.pformat(result.stdout), '>'))
+
+    if result.returncode != 0:
+        print(Fore.RED + Style.BRIGHT + "Error: " + str(result.stderr))
+        sys.exit(1)
+
+    for line in result.stdout.splitlines():
+        if line.startswith("HubWindowSize:"):
+            windowSize_data = line.replace("HubWindowSize: ", "")
+            windowSize_data = json.loads(windowSize_data)
+
+            WindowSize = QSize()
+            WindowSize.setWidth(int(windowSize_data["WIDTH"]))
+            WindowSize.setHeight(int(windowSize_data["HEIGHT"]))
+
+            print(Fore.GREEN + "Received HubWindowSize: " + 
+                  str(WindowSize.width()) + "x" + 
+                  str(WindowSize.height()))
+
+
 
 
 
 class HubWindow(QMainWindow):
-    WindowSize = None
 
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("Project Hub")
 
-        args = parser.parse_args()
-
-        if args.SetWindowSize:
-            print(Fore.BLUE + "Received Hub window size from cli")
-            if args.width and args.height:
-                print(Fore.GREEN + "Setting Hub window size to " + str(args.width) + "x" + str(args.height))
-                HubWindow.WindowSize = QSize(args.width, args.height)
-            else:
-                print(Fore.RED + "Error: --width and --height are required when using --SetWindowSize")
-                sys.exit(1)
-        else:
-            print(Fore.BLUE + "Instantiating " + "pyroGamer.HubConfig" + " to get Hub window size...")
-            result = subprocess.run(['python', '-m', 'pyroGamer.HubConfig', '--GetWindowSize'], capture_output=True, text=True)
-
-            if result.returncode != 0:
-                print(Fore.LIGHTBLACK_EX + textwrap.indent(pprint.pformat(result.stdout), '>'))
-                print(Fore.RED + Style.BRIGHT + "Error: " + str(result.stderr))
-                sys.exit(1)
-
-            for line in result.stdout.splitlines():
-                if line.startswith("HubWindowSize:"):
-                    windowSize_data = line.replace("HubWindowSize: ", "")
-                    windowSize_data = json.loads(windowSize_data)
-
-                    HubWindow.WindowSize = QSize()
-                    HubWindow.WindowSize.setWidth(int(windowSize_data["WIDTH"]))
-                    HubWindow.WindowSize.setHeight(int(windowSize_data["HEIGHT"]))
-
-                    print(Fore.GREEN + "Received HubWindowSize: " + 
-                          str(HubWindow.WindowSize.width()) + "x" + 
-                          str(HubWindow.WindowSize.height()))
-
-
-        self.setFixedSize(HubWindow.WindowSize)
+        self.setFixedSize(WindowSize)
 
         layout = QVBoxLayout()
 

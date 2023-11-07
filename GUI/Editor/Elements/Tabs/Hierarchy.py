@@ -63,7 +63,7 @@ class HierarchyTab(QWidget):
         # TODO: get the active scene from the ProjectData.json file
 
         activeScene = None
-        result = subprocess.run(['python', '-m', 'pyroGamer.FileManager.Editor', 
+        result = subprocess.run(['python', '-m', 'pyroGamer.GUI.Editor.FileManager', 
                                 'getLatestSavedScene', '--projectPath', self.projectPath.as_posix()],
                                 capture_output=True, text=True) 
         if result.returncode != 0:

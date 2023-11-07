@@ -1,6 +1,3 @@
-
-
-
 import sys
 import typing
 import argparse
@@ -31,7 +28,7 @@ from PyQt6.QtWidgets import (
     QStatusBar,
 )
 
-from pyroGamer.Editor.GUI import Pages
+from pyroGamer.GUI.Editor.Elements import Pages
 
 ProjectDataPath = None
 
@@ -55,7 +52,7 @@ OpenProject_Parser.add_argument('--path', type=Path, required=True, help='Path t
 args = parser.parse_args()
 
 if args.command == "OpenProject":
-    result = subprocess.run(['python', '-m', 'pyroGamer.FileManager.Editor',
+    result = subprocess.run(['python', '-m', 'pyroGamer.GUI.Editor.FileManager',
                             'isValidProject', '--path', Path(args.path).as_posix()], 
                             capture_output=True, text=True)
     if result.returncode != 0:

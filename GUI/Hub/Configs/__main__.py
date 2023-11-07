@@ -1,4 +1,6 @@
 
+
+
 import os
 import configparser
 import argparse
@@ -6,18 +8,20 @@ import pprint
 import json 
 
 
-from pyroGamer.HubConfig.FileManager import FileManager
-
 from colorama import Fore, Back, Style, init
 init(autoreset=True)
 
 
-print(Fore.BLACK + Style.BRIGHT + "start HubConfig...")
+print(Fore.BLACK + Style.BRIGHT + "init HubConfig...")
 
+
+from pyroGamer.GUI.Hub.Configs.FileManager import FileManager
 
 
 # TODO: Group the arguments into subcommands
 parser = argparse.ArgumentParser(description='HubConfig Utility')
+parser.add_argument('-v', '--verbose', action="store_true", help='Print more information')
+
 parser.add_argument('--GetWindowSize', action='store_true', help='Get Hub window size')
 parser.add_argument('--GetProjectsTableHeaders', action='store_true', help='Get Headers for Projects Table View')
 
