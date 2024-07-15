@@ -7,6 +7,7 @@ from colorama import Fore, Back, Style, init
 init(autoreset=True)
 
 
+
 class FileManager():
     DocumentsFolder_Path = ""
     DataFolder_Path = ""
@@ -198,3 +199,4 @@ class FileManager():
             with open(FileManager.ProjectsList_Path, 'w') as f:
                 f.write("[]")
             print(Fore.YELLOW + "Created ProjectList.json because it didn't exist.")
+
